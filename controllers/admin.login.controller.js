@@ -1,4 +1,4 @@
-const admin = require('./../inc/admin')(io);
+const admin = require('../inc/admin')(io);
 
 async function renderPaginaLogin(req, res, next){
 

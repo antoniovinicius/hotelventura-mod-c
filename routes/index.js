@@ -53,7 +53,7 @@ module.exports = (io) => {
       "SELECT * FROM tb_quartos ORDER BY nome_quarto",
       (err, results, fields) => {
 
-        res.render('index', Object.assign({}, defaults, {
+        res.render('site/index', Object.assign({}, defaults, {
           title: 'Hotel Ventura',
           quartos: results,
           headerIndex: true
@@ -66,7 +66,7 @@ module.exports = (io) => {
 
   router.get('/contatos', (req, res, next) => {
 
-    res.render('contatos', Object.assign({}, defaults, defaultContato));
+    res.render('site/contatos', Object.assign({}, defaults, defaultContato));
 
   });
 
@@ -74,7 +74,7 @@ module.exports = (io) => {
 
     let render = (error, success) => {
 
-      res.render('contatos', Object.assign({}, defaults, defaultContato, {
+      res.render('site/contatos', Object.assign({}, defaults, defaultContato, {
         body: req.body,
         success,
         error
@@ -130,7 +130,7 @@ module.exports = (io) => {
       "SELECT * FROM tb_quartos ORDER BY nome_quarto",
       (err, results, fields) => {
 
-        res.render('quartos', Object.assign({}, defaults, {
+        res.render('site/quartos', Object.assign({}, defaults, {
           title: 'Quartos - Hotel Ventura',
           header: {
             background: 'images/img_bg_1.jpg',
@@ -148,7 +148,7 @@ module.exports = (io) => {
     conn.query(
       "SELECT * FROM tb_quartos ORDER BY nome_quarto",
       (err, results, fields) => {
-        res.render('reservas', Object.assign({}, defaults, defaultsReservas, {
+        res.render('site/reservas', Object.assign({}, defaults, defaultsReservas, {
           quartos: results
         }));
     });
@@ -161,7 +161,7 @@ module.exports = (io) => {
       conn.query(
         "SELECT * FROM tb_quartos ORDER BY nome_quarto",
         (err, results, fields) => {
-          res.render('reservas', Object.assign({}, defaults, defaultsReservas, {
+          res.render('site/reservas', Object.assign({}, defaults, defaultsReservas, {
             quartos: results,
             body: req.body,
             success,
@@ -274,13 +274,13 @@ module.exports = (io) => {
 
   router.get('/servicos', (req, res, next) => {
 
-    res.render('servicos', Object.assign({}, defaults, defaultServicos));
+    res.render('site/servicos', Object.assign({}, defaults, defaultServicos));
 
   });
 
   router.get('/login', (req, res, next) => {
 
-    res.render('login', Object.assign({}, defaults, defaultLogin));
+    res.render('site/login', Object.assign({}, defaults, defaultLogin));
 
   });
 

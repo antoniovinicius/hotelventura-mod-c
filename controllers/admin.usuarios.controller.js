@@ -1,4 +1,4 @@
-const admin = require('./../inc/admin')(io);
+const admin = require('../inc/admin')(io);
 const moment = require('moment');
 moment.locale('pt-BR');
 async function getUsuario(req, res, next){

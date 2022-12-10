@@ -1,16 +1,17 @@
-const { getReserva } = require('../controllers/reservas.controller');
+const { getReserva } = require('../controllers/admin.reservas.controller');
 
 module.exports = (io) => {
+    
     const admin = require('./../inc/admin')(io);
     const express = require('express');
     const router = express.Router();
-    const AdminController = require('../controllers/admin.controller');
-    const LoginController = require('../controllers/login.controller');
-    const ContatosController = require('../controllers/contatos.controller');
-    const QuartoController = require('../controllers/quartos.controller');
-    const ReservaController = require('../controllers/reservas.controller');
-    const UsuarioController = require('../controllers/usuarios.controller');
-    const EmailController = require('../controllers/emails.controller');
+    const AdminController = require('../controllers/admin.index.controller');
+    const LoginController = require('../controllers/admin.login.controller');
+    const ContatosController = require('../controllers/admin.contatos.controller');
+    const QuartoController = require('../controllers/admin.quartos.controller');
+    const ReservaController = require('../controllers/admin.reservas.controller');
+    const UsuarioController = require('../controllers/admin.usuarios.controller');
+    const EmailController = require('../controllers/admin.emails.controller');
 
     router.use((req, res, next) => {
 
