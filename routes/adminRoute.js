@@ -2,7 +2,7 @@ const { getReserva } = require('../controllers/admin.reservas.controller');
 
 module.exports = (io) => {
     
-    const admin = require('./../inc/admin')(io);
+    const admin = require('../inc/admin')(io);
     const express = require('express');
     const router = express.Router();
     const AdminController = require('../controllers/admin.index.controller');
@@ -27,7 +27,7 @@ module.exports = (io) => {
 
     });
 
-    router.get('/', AdminController.getHome);
+    router.get('/', AdminController.renderHome);
 
     router.get('/login', LoginController.renderPaginaLogin);
 

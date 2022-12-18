@@ -1,7 +1,7 @@
 const admin = require('../inc/admin')(io);
 
 
-async function getHome(req, res, _next){
+async function renderHome(req, res, _next){
   admin.home().then(data => {
 
     res.render('admin/index', {
@@ -13,4 +13,4 @@ async function getHome(req, res, _next){
 });
 }
 
-module.exports = {getHome}
+module.exports = {renderHome}

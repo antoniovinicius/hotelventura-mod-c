@@ -16,8 +16,8 @@ var io = socket(http);
 
 global.io = io;
 
-var indexRouter = require('./routes/index')(io);
-var adminRouter = require('./routes/admin')(io);
+var siteRouter = require('./routes/siteRoute')(io);
+var adminRouter = require('./routes/adminRoute')(io);
 
 const RedisStore = connectRedis(session)
 const redisClient = redis.createClient({
@@ -56,7 +56,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', siteRouter);
 app.use('/admin', adminRouter);
 
 app.use(function(req, res, next) {

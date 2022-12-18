@@ -9,30 +9,26 @@
         <div class="row">
 
             <% quartos.forEach(function(quarto){ %>
-            <div class="col-lg-6">
-                <a href="<%=quarto.foto%>" class="fh5co-card-item image-popup">
-                    <figure>
-                        <div class="overlay">
-                            <i class="ti-plus"></i>
-                        </div>
-                        <img src="<%=quarto.foto%>" alt="Image" class="img-responsive">
-                    </figure>
-                    <div class="fh5co-text">
-                        <h2>
-                            <%=quarto.nome_quarto%>
-                        </h2>
-                        <p>
-                            <%=quarto.descricao%>
-                        </p>
-                        <p>
-                            <span class="price cursive-font">
-                                <%=quarto.tarifa%></span>
-                        </p>
+            <div class="card card-price">
+                <div class="card-img">
+                    <img src="<%=quarto.foto%>" class="img-responsive">
+                    <div class="card-caption">
+                        <span class="h2"><%=quarto.nome_quarto%></span>
                     </div>
-                </a>
+                </div>
+                <div class="card-body">
+                    <div class="price">R$ <span class="price cursive-font"><%=quarto.tarifa%></span></div>
+                    <ul class="details">
+                    <p>
+                        <%=quarto.descricao%>
+                    </p>
+                    </ul>
+                </div>
             </div>
             <% }); %>
 
         </div>
+
+
     </div>
 </div>

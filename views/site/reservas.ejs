@@ -1,3 +1,38 @@
+<script type="text/javascript">
+
+var globalDias = 0;
+var globalValorTarifa = 0;
+
+function atualizaInfos() {
+    console.log("atualizaInfos");
+    console.log(globalDias);
+    console.log(globalValorTarifa);
+    if ((globalDias > 0) && (globalValorTarifa > 0)) {
+        document.getElementById('qtdDiarias').innerHTML = globalDias;
+        var valorReserva = globalValorTarifa*globalDias;
+        document.getElementById('valorReserva').innerHTML = valorReserva.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+}
+
+function calcQtdDias() {
+    var data1 = new Date(document.getElementById('inputDataFimCreate').value);
+    var data2 = new Date(document.getElementById('inputDataInicioCreate').value);
+    var diffTime = Math.abs(data2-data1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    globalDias = diffDays;
+    atualizaInfos();
+}
+
+function recuperaTarifa(sel) {
+    var sel = document.getElementById('inputQuarto');
+    var text = sel.options[sel.selectedIndex].text;
+    var tarifa = text.split("R$");
+    globalValorTarifa = parseFloat(tarifa[1]);
+    atualizaInfos();
+}
+
+</script>
+
 <%- include('page-header') -%>
 
 <div class="gtco-section">
@@ -31,14 +66,12 @@
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5+</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="inputQuarto">Quarto</label>
-                        <select id="inputQuarto" name="fk_id_quarto" class="form-control">
-                            <option value=""> -- selecione -- </option>
+                        <select id="inputQuarto" name="fk_id_quarto" class="form-control" onchange="recuperaTarifa(this)">
+                            <option value="" > -- selecione -- </option>
                             <% quartos.forEach(function(row){ %>
                                 <option value="<%= row.id_quarto %>">
                                     <%= row.nome_quarto %> | <%= Intl.NumberFormat('pt-br', {style: 'currency' ,
@@ -56,8 +89,19 @@
                     </div>
                     <div class="form-group">
                         <label for="inputTimeCreate">Data Fim</label>
-                        <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control" value="<%=body.data_fim%>">
+                        <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control" onblur="calcQtdDias()" value="<%=body.data_fim%>">
                     </div>
+
+                    <div class="form-group">
+                        <label for="qtdDiarias">Quantidade de diárias:</label>
+                        <span id="qtdDiarias">0</span>
+                    </div>          
+                    
+                    <div class="form-group">
+                        <label for="valorReserva">Valor total da reserva: </label>
+                        <span id="valorReserva">R$ 0,00</span>
+                    </div>                  
+
                     <div class="form-group">
                         <input type="submit" value="Reservar" class="btn btn-primary">
                     </div>
