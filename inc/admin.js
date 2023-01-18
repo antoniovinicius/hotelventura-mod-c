@@ -167,7 +167,7 @@ module.exports = (io) => {
         },
         quartosDelete(req) {
 
-            return new Promise((s, r) => {
+            return new Promise((s, f) => {
 
                 if (!req.params.id) {
                     f('Informe o ID.');
@@ -383,7 +383,7 @@ module.exports = (io) => {
         },
         reservasDelete(req) {
 
-            return new Promise((s, r) => {
+            return new Promise((s, f) => {
 
 
                 if (!req.params.id) {
@@ -493,7 +493,7 @@ module.exports = (io) => {
         },
         usuariosDelete(req) {
 
-            return new Promise((s, r) => {
+            return new Promise((s, f) => {
 
                 if (!req.params.id) {
                     f('Informe o ID.');
@@ -582,7 +582,7 @@ module.exports = (io) => {
             });
         },
         contatosDelete(req) {
-            return new Promise((s, r) => {
+            return new Promise((s, f) => {
 
                 if (!req.params.id) {
                     f('Informe o ID.');
@@ -628,7 +628,7 @@ module.exports = (io) => {
             });
         },
         emailsDelete(req) {
-            return new Promise((s, r) => {
+            return new Promise((s, f) => {
 
                 if (!req.params.id) {
                     f('Informe o ID.');

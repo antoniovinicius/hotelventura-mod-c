@@ -1,5 +1,3 @@
-const { getReserva } = require('../controllers/admin.reservas.controller');
-
 module.exports = (io) => {
     
     const admin = require('../inc/admin')(io);

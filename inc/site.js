@@ -118,7 +118,7 @@ module.exports = (io) => {
             };
 
             return new Promise((s, f) => {
-        
+
                 if (!req.body.nome) {
                     render('Preencha o campo Nome.');
                 } else if (!req.body.email) {
@@ -129,34 +129,58 @@ module.exports = (io) => {
                     render('Selecione a data de inicio da reserva.');
                 } else if (!req.body.data_fim.trim()) {
                     render('Selecione a data fim da reserva.');
+                } else if (req.body.data_inicio > req.body.data_fim) {
+                    render('Data de início não pode ser maior que data de fim da reserva.');
                 } else {
-                    conn.query(
-                    " INSERT INTO tb_reservas (nome, email, qt_hospedes, data_inicio, data_fim, fk_id_quarto, status_reserva ) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                    [
-                        req.body.nome,
-                        req.body.email,
-                        req.body.qt_hospedes,
-                        req.body.data_inicio,
-                        req.body.data_fim,
-                        parseInt(req.body.fk_id_quarto),
-                        req.body.status_reserva
-                    ],
-                    (err, results) => {
-            
+                    const aux_data_inicio = moment(req.body.data_inicio);
+                    const aux_data_fim = moment(req.body.data_fim);
+                    const diffdatas = aux_data_fim.diff(aux_data_inicio, "days")
+                
+                    const aux_fk_id_quarto = parseInt(req.body.fk_id_quarto);
+                    conn.query(`SELECT tarifa FROM tb_quartos WHERE id_quarto =${aux_fk_id_quarto}`, (err, rows) => {
                         if (err) {
-                        render(err);
+                            render(err);
                         } else {
-            
-                        io.emit('reservations update', req.body);
-            
-                        req.body = {};
-            
-                        render(null, 'Reserva realizada com sucesso!');
-            
+                            var aux_tarifa = rows[0].tarifa;
+                            console.log(aux_tarifa);
+                            var vlr_tot_reserva = diffdatas*rows[0].tarifa;
+                            console.log(vlr_tot_reserva);
                         }
+                        let query, params;
+
+                        query = `
+                            INSERT INTO tb_reservas (nome, email, qt_hospedes, data_inicio, data_fim, fk_id_quarto, status_reserva , qt_diarias , vlr_tot_reserva ) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            `;
+                        params = [
+                            req.body.nome,
+                            req.body.email,
+                            req.body.qt_hospedes,
+                            req.body.data_inicio,
+                            req.body.data_fim,
+                            parseInt(req.body.fk_id_quarto),
+                            req.body.status_reserva,
+                            diffdatas,
+                            vlr_tot_reserva
+                        ];
+    
+                        console.log(params); 
+                        
+                        conn.query(query, params, (err, results) => {
+                            if (err) {
+                                render(err);
+                            } else {
+                
+                                io.emit('reservations update', req.body);
+                    
+                                req.body = {};
+                    
+                                render(null, 'Reserva realizada com sucesso!');
+                            }
+                        });
                     });
-                }  
-            });    
+                }
+            });
         }
     }
 }
