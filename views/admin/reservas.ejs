@@ -170,7 +170,7 @@
                         </div>
                         <div class="form-group">
                             <label for="inputQuarto">Quarto</label>
-                            <select id="inputQuarto" name="fk_id_quarto" class="form-control">
+                            <select id="inputQuarto" name="fk_id_quarto" class="form-control" onchange="recuperaTarifa(this)">
                                 <option value=""> -- selecione -- </option>
                                 <% pagination.quartos.forEach(function(row){ %>
                                     <option value="<%= row.id_quarto %>">
@@ -192,14 +192,25 @@
                         <input type="text" value="Reserva aceita" name="status_reserva" style="display:none">
                         <div class="form-group">
                             <label for="inputDateCreate">Data Inicio</label>
-                            <input type="date" id="inputDataInicioCreate" name="data_inicio" class="form-control">
+                            <input type="date" id="inputDataInicioCreate" name="data_inicio" class="form-control" onblur="calcQtdDias()">
                         </div>
                         <div class="form-group">
                             <label for="inputTimeCreate">Data Fim</label>
-                            <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control">
-
+                            <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control" onblur="calcQtdDias()">
                         </div>
                     </div>
+                    <div class="modal-body">
+                    <div class="form-group">
+                        <label for="qtdDiarias">Quantidade de diárias:</label>
+                        <span id="qtdDiarias">0</span>
+                    </div>          
+                    
+                    <div class="form-group">
+                        <label for="valorReserva">Valor total da reserva: </label>
+                        <span id="valorReserva">R$ 0,00</span>
+                    </div> 
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-success">Salvar</button>
@@ -244,7 +255,7 @@
                         </div>
                         <div class="form-group">
                             <label for="inputQuarto">Quarto</label>
-                            <select id="inputQuarto" name="fk_id_quarto" class="form-control">
+                            <select id="inputQuarto" name="fk_id_quarto" class="form-control" onchange="recuperaTarifa(this)">
                                 <option value=""> -- selecione -- </option>
                                 <% pagination.quartos.forEach(function(row){ %>
                                     <option value="<%= row.id_quarto %>">
@@ -265,11 +276,21 @@
                         </div> <!-->
                         <div class="form-group">
                             <label for="inputDateCreate">Data Inicio</label>
-                            <input type="date" id="inputDataInicioCreate" name="data_inicio" class="form-control">
+                            <input type="date" id="inputDataInicioCreate" name="data_inicio" class="form-control" onblur="calcQtdDias()">
                         </div>
                         <div class="form-group">
                             <label for="inputTimeCreate">Data Fim</label>
-                            <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control">
+                            <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control" onblur="calcQtdDias()">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDateCreate">Quantidade de Diárias</label>
+                            <input type="text" id="qtdDiarias" name="qt_diarias" class="form-control"
+                                disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDateCreate">Valor da Reserva</label>
+                            <input type="text" id="valorReserva" name="vlr_tot_reserva" class="form-control"
+                                disabled>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -358,10 +379,11 @@
 
 
     <script src="/js/moment.min.js"></script>
-    <script src="/js/hcode-formsave.js"></script>
-    <script src="/js/hcode-grid.js"></script>
+    <script src="/js/formsave.js"></script>
+    <script src="/js/grid.js"></script>
     <script src="/js/table-to-excel.js"></script>
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/calcdias-valorreserva.js"></script>
     <%- include('inc/footer') -%>
 
         <script>
@@ -381,7 +403,7 @@
                 });
             });
 
-            new HcodeGrid({
+            new Grid({
                 id: 'grid',
                 urlDelete: '/admin/reservas/${data.id_reserva}',
                 textDeleteConfirm: 'Deseja realmente excluir a reserva de ${data.nome}?'

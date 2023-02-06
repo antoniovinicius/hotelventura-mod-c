@@ -196,68 +196,83 @@ module.exports = (io) => {
         reservasSave(req) {
 
             return new Promise((s, f) => {
-
+                
                 let form = new formidable.IncomingForm();
 
                 form.parse(req, function (err, fields, files) {
-                    
-                    let query, params;
 
-                    if (parseInt(fields.id_reserva) > 0) {
-
-                        query = `
-                                UPDATE tb_reservas
-                                SET nome = ?, email = ?, qt_hospedes = ?, data_inicio = ?, data_fim = ?, fk_id_quarto = ? 
-                                WHERE id_reserva = ?
-                            `;
-                        params = [
-                            fields.nome,
-                            fields.email,
-                            fields.qt_hospedes,
-                            fields.data_inicio,
-                            fields.data_fim,
-                            parseInt(fields.fk_id_quarto),
-                            fields.id_reserva
-                        ];
-
-
-                    } else {
-
-                        query = `
-                                INSERT INTO tb_reservas (nome, email, qt_hospedes, data_inicio, data_fim, fk_id_quarto, status_reserva )
-                                VALUES(?, ?, ?, ?, ?, ?, ?)
-                            `;
-                        params = [
-                            fields.nome,
-                            fields.email,
-                            fields.qt_hospedes,
-                            fields.data_inicio,
-                            fields.data_fim,
-                            parseInt(fields.fk_id_quarto),
-                            fields.status_reserva
-                        ];
-
-                    }
-
-                    conn.query(query, params, (err, results) => {
-
+                    const aux_data_inicio = moment(fields.data_inicio);
+                    const aux_data_fim = moment(fields.data_fim);
+                    const diffdatas = aux_data_fim.diff(aux_data_inicio, "days")
+                
+                    const aux_fk_id_quarto = parseInt(fields.fk_id_quarto);
+                    conn.query(`SELECT tarifa FROM tb_quartos WHERE id_quarto =${aux_fk_id_quarto}`, (err, rows) => {
                         if (err) {
-                            f(err);
+                            render(err);
+                        } else {
+                            var aux_tarifa = rows[0].tarifa;
+                            console.log(aux_tarifa);
+                            var vlr_tot_reserva = diffdatas*rows[0].tarifa;
+                            console.log(vlr_tot_reserva);
+                        }
+
+                        let query, params;
+
+                        if (parseInt(fields.id_reserva) > 0) {
+                            console.log("Entrei aqui");
+
+                            query = `
+                                    UPDATE tb_reservas
+                                    SET nome = ?, email = ?, qt_hospedes = ?, data_inicio = ?, data_fim = ?, fk_id_quarto = ?, qt_diarias = ?, vlr_tot_reserva = ?
+                                    WHERE id_reserva = ?
+                                `;
+                            params = [
+                                fields.nome,
+                                fields.email,
+                                fields.qt_hospedes,
+                                fields.data_inicio,
+                                fields.data_fim,
+                                parseInt(fields.fk_id_quarto),
+                                fields.id_reserva,
+                                diffdatas,
+                                vlr_tot_reserva
+                            ];
+
+
                         } else {
 
-                            io.emit('reservations update', fields);
-
-                            s(fields, results);
+                            query = `
+                                INSERT INTO tb_reservas (nome, email, qt_hospedes, data_inicio, data_fim, fk_id_quarto, status_reserva , qt_diarias , vlr_tot_reserva ) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                `;
+                            params = [
+                                fields.nome,
+                                fields.email,
+                                fields.qt_hospedes,
+                                fields.data_inicio,
+                                fields.data_fim,
+                                parseInt(fields.fk_id_quarto),
+                                fields.status_reserva,
+                                diffdatas,
+                                vlr_tot_reserva
+                            ];
 
                         }
 
-                    }
-                    );
-
+                        console.log(query);
+                        console.log(params);
+                        conn.query(query, params, (err, results) => {
+                            console.log("Entrei aqui 2 dois 2");
+                            if (err) {
+                                f(err);
+                            } else {
+                                io.emit('reservations update', fields);
+                                s(fields, results);
+                            }
+                        });
+                    });
                 });
-
             });
-
         },
         alterarStatus(req) {
 

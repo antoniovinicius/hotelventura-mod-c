@@ -153,12 +153,12 @@
 
     <%- include('inc/footer') -%>
 
-        <script src="/js/hcode-filereader.js"></script>
-        <script src="/js/hcode-formsave.js"></script>
-        <script src="/js/hcode-grid.js"></script>
+        <script src="/js/filereader.js"></script>
+        <script src="/js/formsave.js"></script>
+        <script src="/js/grid.js"></script>
         <script>
 
-            new HcodeGrid({
+            new Grid({
                 id: 'grid',
                 urlDelete: '/admin/quartos/${data.id_quarto}',
                 textDeleteConfirm: 'Deseja realmente excluir ${data.nome_quarto} de quartos?',
@@ -176,6 +176,6 @@
                 }
             });
 
-            new HcodeFileReader(document.querySelector('#inputPhotoCreate'), document.querySelector('#inputPhotoViewCreate'));
-            new HcodeFileReader(document.querySelector('#inputPhotoUpdate'), document.querySelector('#inputPhotoViewUpdate'));
+            new FileReader(document.querySelector('#inputPhotoCreate'), document.querySelector('#inputPhotoViewCreate'));
+            new FileReader(document.querySelector('#inputPhotoUpdate'), document.querySelector('#inputPhotoViewUpdate'));
         </script>

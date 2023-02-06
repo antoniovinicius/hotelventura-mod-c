@@ -53,11 +53,11 @@
 
 <%- include('inc/footer') -%>
 
-<script src="/js/hcode-formsave.js"></script>
-<script src="/js/hcode-grid.js"></script>
+<script src="/js/formsave.js"></script>
+<script src="/js/grid.js"></script>
 <script>
 
-    new HcodeGrid({
+    new Grid({
         id: 'grid',
         urlDelete: '/admin/contatos/${data.id_contato}',
         textDeleteConfirm: 'Deseja realmente excluir o contato de ${data.nome}?'

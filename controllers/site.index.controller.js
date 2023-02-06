@@ -11,4 +11,19 @@ async function renderHome(req, res, _next){
   });
 }
 
-module.exports = {renderHome}
+async function inscreverEmail(req, res, next) {
+  site.emailSave(req, res).then(data => {
+    res.send(data);
+
+}).catch(err => {
+
+    res.status(400);
+    res.send({
+        error: err
+    });
+
+});
+}
+
+
+module.exports = {renderHome, inscreverEmail}

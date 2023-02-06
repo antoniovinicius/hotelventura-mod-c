@@ -54,6 +54,54 @@ module.exports = (io) => {
 
   });
 
+  router.post('/subscribe', SiteController.inscreverEmail);
+
+/*   router.post('/subscribe', (req, res, next) => {
+
+    let form = new formidable.IncomingForm();
+
+    form.parse(req, (err, fields, files) => {
+
+      if (!fields.email) {
+
+        res.status(400);
+        res.send({
+          error: 'Preencha o campo e-mail.'
+        });
+
+      } else {
+
+        conn.query(
+          "INSERT INTO tb_emails (email) VALUES(?)",
+          [
+            fields.email
+          ],
+          (err, results) => {
+
+            if (err) {
+
+              res.status(400);
+              res.send({
+                error: err
+              });
+
+            } else {
+
+              io.emit('reservations update', fields);
+
+              res.send(results);
+
+            }
+
+          }
+        );
+
+      }
+
+    });
+
+  }); */
+
   return router;
 
 };

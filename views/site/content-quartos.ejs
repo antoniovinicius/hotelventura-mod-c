@@ -17,7 +17,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="price">R$ <span class="price cursive-font"><%=quarto.tarifa%></span></div>
+                    <div class="price">R$ <span class="price cursive-font"><%= Intl.NumberFormat('pt-br', {style: 'currency' ,
+                        currency: 'BRL' }).format(quarto.tarifa) %></span></div>
                     <ul class="details">
                     <p>
                         <%=quarto.descricao%>

@@ -49,11 +49,11 @@
 
 <%- include('inc/footer') -%>
 
-<script src="/js/hcode-formsave.js"></script>
-<script src="/js/hcode-grid.js"></script>
+<script src="/js/formsave.js"></script>
+<script src="/js/grid.js"></script>
 <script>
 
-    new HcodeGrid({
+    new Grid({
         id: 'grid',
         urlDelete: '/admin/emails/${data.id_email}',
         textDeleteConfirm: 'Deseja realmente excluir o e-mail ${data.email}?'

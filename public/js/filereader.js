@@ -1,4 +1,4 @@
-class HcodeFileReader {
+class FileReader {
 
     constructor(inputEl, imgEl){
 

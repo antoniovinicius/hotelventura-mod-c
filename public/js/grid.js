@@ -1,4 +1,4 @@
-class HcodeGrid {
+class Grid {
 
     constructor(config) {
 
@@ -113,7 +113,7 @@ class HcodeGrid {
 
     }
 
-    getTrData(event) {
+    /* getTrData(event) {
 
         let tr = event.path.find(el => {
             return (el.tagName.toUpperCase() === 'TR');
@@ -121,7 +121,23 @@ class HcodeGrid {
 
         return JSON.parse(tr.dataset.row);
 
-    }
+    } */
+
+    getTrData(e) {
+ 
+        let path = e.path || (e.composedPath && event.composedPath()) || composedPath(e.target);
+        
+        if (path) {
+       
+          let tr = path.find(el => {
+       
+            return (el.tagName.toUpperCase() === 'TR');
+       
+          });
+       
+          return JSON.parse(tr.dataset.row);
+        }
+      }
 
     initForms() {
 
