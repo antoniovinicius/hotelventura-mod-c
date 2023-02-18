@@ -297,7 +297,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 #gtco-header h2 {
   font-weight: 300;
-  font-size: 22px;
+  font-size: 30px;
   line-height: 1.5;
   margin-bottom: 30px;
 }
@@ -1961,6 +1961,33 @@ form label {
   }
 }
 
+/* Horizontal line */
+.collapsible-link::before {
+  content: '';
+  width: 14px;
+  height: 2px;
+  background: #333;
+  position: absolute;
+  top: calc(50% - 1px);
+  right: 1rem;
+  display: block;
+  transition: all 0.3s;
+}
+
+/* === Accordion Usuarioadmin css ===  */
+
+.panel-heading .accordion-toggle:after {
+  /* symbol for "opening" panels */
+  font-family: 'Glyphicons Halflings'; /* essential for enabling glyphicon */
+  content: "\e114"; /* adjust as needed, taken from bootstrap.css */
+  float: right; /* adjust as needed */
+  color: grey; /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\e080"; /* adjust as needed, taken from bootstrap.css */
+}
+  
 /* === card component ====== 
  * Variation of the panel component
  * version 2018.10.30

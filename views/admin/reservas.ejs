@@ -136,9 +136,7 @@
             </div>
 
         </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
 
     <div class="modal fade" id="modal-create">
         <div class="modal-dialog">
@@ -170,7 +168,8 @@
                         </div>
                         <div class="form-group">
                             <label for="inputQuarto">Quarto</label>
-                            <select id="inputQuarto" name="fk_id_quarto" class="form-control" onchange="recuperaTarifa(this)">
+                            <select id="inputQuarto" name="fk_id_quarto" class="form-control"
+                                onchange="recuperaTarifa(this)">
                                 <option value=""> -- selecione -- </option>
                                 <% pagination.quartos.forEach(function(row){ %>
                                     <option value="<%= row.id_quarto %>">
@@ -180,35 +179,28 @@
                                     <% }); %>
                             </select>
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="inputStatus">Status</label>
-                            <select id="inputStatus" name="status" class="form-control">
-                                <option value=""> -- selecione -- </option>
-                                <option value="Aguardando aprovação"> Aguardando aprovação</option>
-                                <option value="Reserva aceita">Reserva aceita</option>
-                                <option value="Reserva recusada">Reserva recusada</option>
-                            </select>
-                        </div> <!-->
                         <input type="text" value="Reserva aceita" name="status_reserva" style="display:none">
                         <div class="form-group">
                             <label for="inputDateCreate">Data Inicio</label>
-                            <input type="date" id="inputDataInicioCreate" name="data_inicio" class="form-control" onblur="calcQtdDias()">
+                            <input type="date" id="inputDataInicioCreate" name="data_inicio" class="form-control"
+                                onblur="calcQtdDias()">
                         </div>
                         <div class="form-group">
                             <label for="inputTimeCreate">Data Fim</label>
-                            <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control" onblur="calcQtdDias()">
+                            <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control"
+                                onblur="calcQtdDias()">
                         </div>
                     </div>
                     <div class="modal-body">
-                    <div class="form-group">
-                        <label for="qtdDiarias">Quantidade de diárias:</label>
-                        <span id="qtdDiarias">0</span>
-                    </div>          
-                    
-                    <div class="form-group">
-                        <label for="valorReserva">Valor total da reserva: </label>
-                        <span id="valorReserva">R$ 0,00</span>
-                    </div> 
+                        <div class="form-group">
+                            <label for="qtdDiarias">Quantidade de diárias:</label>
+                            <span id="qtdDiarias">0</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="valorReserva">Valor total da reserva: </label>
+                            <span id="valorReserva">R$ 0,00</span>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -217,9 +209,7 @@
                     </div>
                 </form>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
     <div class="modal fade" id="modal-update">
@@ -255,7 +245,8 @@
                         </div>
                         <div class="form-group">
                             <label for="inputQuarto">Quarto</label>
-                            <select id="inputQuarto" name="fk_id_quarto" class="form-control" onchange="recuperaTarifa(this)">
+                            <select id="inputQuartoEdit" name="fk_id_quarto" class="form-control"
+                                onchange="recuperaTarifa(this)">
                                 <option value=""> -- selecione -- </option>
                                 <% pagination.quartos.forEach(function(row){ %>
                                     <option value="<%= row.id_quarto %>">
@@ -265,31 +256,23 @@
                                     <% }); %>
                             </select>
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="inputStatus">Status</label>
-                            <select id="inputStatus" name="status_reserva" class="form-control">
-                                <option value=""> -- selecione -- </option>
-                                <option value="Aguardando aprovação"> Aguardando aprovação</option>
-                                <option value="Reserva aceita">Reserva aceita</option>
-                                <option value="Reserva recusada">Reserva recusada</option>
-                            </select>
-                        </div> <!-->
                         <div class="form-group">
                             <label for="inputDateCreate">Data Inicio</label>
-                            <input type="date" id="inputDataInicioCreate" name="data_inicio" class="form-control" onblur="calcQtdDias()">
+                            <input type="date" id="inputDataInicioCreateEdit" name="data_inicio" class="form-control"
+                                onblur="calcQtdDias()" onchange="editReserva(event)">
                         </div>
                         <div class="form-group">
                             <label for="inputTimeCreate">Data Fim</label>
-                            <input type="date" id="inputDataFimCreate" name="data_fim" class="form-control" onblur="calcQtdDias()">
+                            <input type="date" id="inputDataFimCreateEdit" name="data_fim" class="form-control"
+                                onblur="calcQtdDias()" onchange="editReserva(event)">
+                        </div>
+                        <div class=" form-group">
+                            <label for="qtdDiariasEdit">Quantidade de Diárias</label>
+                            <input type="text" id="qtdDiariasEdit" name="qt_diarias" class="form-control" disabled>
                         </div>
                         <div class="form-group">
-                            <label for="inputDateCreate">Quantidade de Diárias</label>
-                            <input type="text" id="qtdDiarias" name="qt_diarias" class="form-control"
-                                disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDateCreate">Valor da Reserva</label>
-                            <input type="text" id="valorReserva" name="vlr_tot_reserva" class="form-control"
+                            <label for="valorReservaEdit">Valor da Reserva</label>
+                            <input type="text" id="valorReservaEdit" name="vlr_tot_reserva" class="form-control"
                                 disabled>
                         </div>
                     </div>
@@ -299,9 +282,7 @@
                     </div>
                 </form>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
     <div class="modal fade" id="modal-reserva">
@@ -372,9 +353,7 @@
                     </div>
                 </form>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
 

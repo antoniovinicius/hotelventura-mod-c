@@ -233,9 +233,9 @@ module.exports = (io) => {
                                 fields.data_inicio,
                                 fields.data_fim,
                                 parseInt(fields.fk_id_quarto),
-                                fields.id_reserva,
                                 diffdatas,
-                                vlr_tot_reserva
+                                vlr_tot_reserva,
+                                parseInt(fields.id_reserva)
                             ];
 
 
@@ -258,11 +258,7 @@ module.exports = (io) => {
                             ];
 
                         }
-
-                        console.log(query);
-                        console.log(params);
                         conn.query(query, params, (err, results) => {
-                            console.log("Entrei aqui 2 dois 2");
                             if (err) {
                                 f(err);
                             } else {
@@ -432,7 +428,7 @@ module.exports = (io) => {
 
                 conn.query(
                     `
-                    SELECT * FROM tb_usuarios ORDER BY nome
+                    SELECT * FROM tb_usuarios ORDER BY id_usuario
                 `,
                     (err, results) => {
 
@@ -461,12 +457,13 @@ module.exports = (io) => {
 
                         query = `
                                 UPDATE tb_usuarios
-                                SET nome = ?, email = ?
+                                SET nome = ?, email = ?, tipo_usuario = ?
                                 WHERE id_usuario = ?
                             `;
                         params = [
                             fields.nome,
                             fields.email,
+                            fields.tipo_usuario,
                             fields.id_usuario
                         ];
 
@@ -481,7 +478,7 @@ module.exports = (io) => {
                             fields.nome,
                             fields.email,
                             fields.senha,
-                            1
+                            fields.tipo_usuario
                         ];
 
                     }
@@ -668,6 +665,46 @@ module.exports = (io) => {
 
             });
         },
+        logs() {
+            return new Promise((s, f) => {
+
+                conn.query(
+                    `
+                    SELECT * FROM tb_log_reservas ORDER BY id_log_reserva
+                `,
+                    (err, results) => {
+
+                        if (err) {
+                            f(err);
+                        } else {
+                            s(results);
+                        }
+
+                    }
+                );
+
+            });
+        },
+        logsDelete(req) {
+            return new Promise((s, f) => {
+                if (!req.params.id) {
+                    f('Informe o ID.');
+                } else {
+                    conn.query(`
+                    DELETE FROM tb_log_reservas WHERE id_log_reserva = ?
+                `, [
+                        req.params.id
+                    ], (err, results) => {
+                        if (err) {
+                            f(err);
+                        } else {
+                            io.emit('reservations update');
+                            s(results);
+                        }
+                    });
+                }
+            });
+        },
         getParametros(req, params){
             return Object.assign({}, {
                 menus: req.menus,
@@ -712,6 +749,18 @@ module.exports = (io) => {
                     text:"E-mails",
                     href:"/admin/emails",
                     icon:"envelope",
+                    active:false
+                },
+                {
+                    text:"Logs",
+                    href:"/admin/logs",
+                    icon:"",
+                    active:false
+                },
+                {
+                    text:"Dashboard",
+                    href:"/admin/dashboard",
+                    icon:"fa-tachometer",
                     active:false
                 }
             ];

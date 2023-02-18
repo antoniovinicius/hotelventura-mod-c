@@ -5,11 +5,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Contatos
+        Logs
       </h1>
       <ol class="breadcrumb">
         <li><a href="/admin"><i class="fa fa-home"></i> Home</a></li>
-        <li class="active">Contatos</li>
+        <li class="active">Logs</li>
       </ol>
     </section>
 
@@ -26,17 +26,13 @@
                 <tbody>
                     <tr>
                         <th style="width: 10px">#</th>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Mensagem</th>
+                        <th>Log</th>
                         <th style="min-width: 75px;">Ações</th>
                     </tr>
                     <% data.forEach(function(row){ %>
                     <tr data-row="<%= JSON.stringify(row) %>">
-                        <td><%= row.id_contato %></td>
-                        <td><%= row.nome %></td>
-                        <td><%= row.email %></td>
-                        <td><%= row.mensagem %></td>
+                        <td><%= row.id_log_reserva %></td>
+                        <td><%= row.texto_log %></td>
                         <td><button type="button" class="btn btn-xs btn-danger btn-delete"><i class="fa fa-trash"></i> Excluir</button></td>
                     </tr>
                     <% }); %>
@@ -59,8 +55,8 @@
 
     new Grid({
         id: 'grid',
-        urlDelete: '/admin/contatos/${data.id_contato}',
-        textDeleteConfirm: 'Deseja realmente excluir o contato de ${data.nome}?'
+        urlDelete: '/admin/logs/${data.id_log_reserva}',
+        textDeleteConfirm: 'Deseja realmente excluir o log de id ${data.id_log_reserva}?'
     });
 
 </script>

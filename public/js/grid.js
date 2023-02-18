@@ -4,12 +4,10 @@ class Grid {
 
         config.listeners = Object.assign({
             afterUpdateClick() {
-                console.log("entrei aqui no update")
                 $(this.options.modalUpdate).modal('show');
 
             },
             afterReservaClick() {
-                console.log("entrei aqui")
 
                 $(this.options.modalReserva).modal('show');
 
@@ -63,17 +61,17 @@ class Grid {
             btnDelete: '.btn-delete',
             textDeleteConfirm: 'Deseja realmente excluir?',
             onUpdateLoad: (formUpdate, name, data) => {
-
                 let input = formUpdate.querySelector(`[name=${name}]`);
 
                 if (input) {
                     switch (input.type) {
                         case 'date':
                             input.value = moment(data[name]).format('YYYY-MM-DD');
+                            input.setAttribute('value', moment(data[name]).format('YYYY-MM-DD'));
                             break;
                         default:
                             input.value = data[name];
-
+                            input.setAttribute('value', data[name]);
                     }
                 }
 
@@ -81,14 +79,15 @@ class Grid {
             onReservaLoad: (formReserva, name, data) => {
 
                 let input = formReserva.querySelector(`[name=${name}]`);
-
                 if (input) {
                     switch (input.type) {
                         case 'date':
                             input.value = moment(data[name]).format('YYYY-MM-DD');
                             break;
                         default:
+                            
                             input.value = data[name];
+                            
 
                     }
                 }
@@ -113,16 +112,6 @@ class Grid {
 
     }
 
-    /* getTrData(event) {
-
-        let tr = event.path.find(el => {
-            return (el.tagName.toUpperCase() === 'TR');
-        });
-
-        return JSON.parse(tr.dataset.row);
-
-    } */
-
     getTrData(e) {
  
         let path = e.path || (e.composedPath && event.composedPath()) || composedPath(e.target);
@@ -140,7 +129,6 @@ class Grid {
       }
 
     initForms() {
-
         if (this.formCreate) {
             this.formCreate.submitAjax({
                 success: response => {
@@ -165,6 +153,7 @@ class Grid {
 
         if (this.formUpdate) {
             this.formUpdate.submitAjax({
+                
                 success: response => {
                     this.fireEvent('afterFormUpdate', [response]);
                 },
@@ -212,7 +201,6 @@ class Grid {
     }
 
     actionBtnUpdate(e) {
-
         this.fireEvent('beforeUpdateClick');
 
         let data = this.getTrData(e);

@@ -8,7 +8,7 @@
       Usuários
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+      <li><a href="/admin"><i class="fa fa-home"></i> Home</a></li>
       <li class="active">Usuários</li>
     </ol>
   </section>
@@ -30,7 +30,7 @@
               <th style="width: 10px">#</th>
               <th>Nome</th>
               <th>E-mail</th>
-              <th style="min-width: 134px;">Ações</th>
+              <th style="min-width: 134px;">Tipo do Usuário</th>
             </tr>
           </thead>
           <tbody>
@@ -44,6 +44,9 @@
               </td>
               <td>
                 <%= row.email %>
+              </td>
+              <td>
+                <%= row.tipo_usuario %>
               </td>
               <td>
                 <button type="button" class="btn btn-xs btn-info btn-update"><i
@@ -119,6 +122,15 @@
             <label for="inputPasswordCreate">Senha</label>
             <input type="password" class="form-control" id="inputPasswordCreate" name="senha">
           </div>
+          <div class="form-group">
+            <label for="inputTipoUsuario">Tipo do Usuário</label>
+            <select id="inputTipoUsuario" name="tipo_usuario" class="form-control">
+                <option value=""> -- selecione -- </option>
+                <option value="Administrador">Administrador</option>
+                <option value="Atendente">Atendente</option>
+                <option value="Usuario">Usuario</option>
+            </select>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
@@ -150,6 +162,15 @@
           <div class="form-group">
             <label for="inputEmailUpdate">E-mail</label>
             <input type="email" class="form-control" id="inputEmailUpdate" name="email">
+          </div>
+          <div class="form-group">
+            <label for="inputTipoUsuario">Tipo do Usuário</label>
+            <select id="inputTipoUsuario" name="tipo_usuario" class="form-control">
+                <option value=""> -- selecione -- </option>
+                <option value="Administrador">Administrador</option>
+                <option value="Atendente">Atendente</option>
+                <option value="Usuario">Usuario</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer">

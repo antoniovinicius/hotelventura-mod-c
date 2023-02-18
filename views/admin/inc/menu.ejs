@@ -31,11 +31,22 @@
             <span>Usuários</span>
         </a>
     </li>
-    <li <% if (url==='/emails' ) { %>class="active"
-        <% } %>>
+    <li <% if (url==='/emails') { %>class="active"<% } %>>
         <a href="/admin/emails">
             <i class="fa fa-envelope"></i>
             <span>E-mails</span>
+        </a>
+    </li>
+    <li <% if (url==='/logs' ) { %>class="active"<% } %>>
+        <a href="/admin/logs">
+            <i class="fa fa-question-circle"></i>
+            <span>Logs</span>
+        </a>
+    </li>
+    <li <% if (url==='/logs' ) { %>class="active"<% } %>>
+        <a href="/admin/dashboard">
+            <i class="fa fa-tachometer"></i>
+            <span>Dashboard</span>
         </a>
     </li>
 </ul>

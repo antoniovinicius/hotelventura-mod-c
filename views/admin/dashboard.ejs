@@ -1,0 +1,132 @@
+<%- include('inc/header') -%>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Dashboard
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-home"></i> Home</a></li>
+      </ol>
+    </section>
+
+    <section class="content container-fluid">
+      <div class="row">
+        <div class="col-md-6 col-sm-6">
+          <div class="info-box">
+              <div id="chart1"></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="info-box">
+              <div id="chart2"></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="info-box">
+              <div id="chart3"></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="info-box">
+              <div id="chart4"></div>
+            </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+
+<%- include('inc/footer') -%>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { packages: [ 'corechart' ] })
+    google.charts.setOnLoadCallback(drawChart1)
+    google.charts.setOnLoadCallback(drawChart2)
+    google.charts.setOnLoadCallback(drawChart3)
+    google.charts.setOnLoadCallback(drawChart4)
+
+    function drawChart1() {
+        const container = document.querySelector('#chart1')
+        const data = new google.visualization.arrayToDataTable([
+            [ 'Mês', 'Quantidade' ],
+            [ 'Jan', 65 ],
+            [ 'Fev', 90 ],
+            [ 'Mar', 80 ],
+            [ 'Abr', 85 ],
+            [ 'Mai', 73 ],
+            [ 'Jun', 121 ],
+            [ 'Jul', 156 ],
+            [ 'Ago', 91 ],
+            [ 'Set', 87 ],
+            [ 'Out', 98 ],
+            [ 'Nov', 63 ],
+            [ 'Dez', 117 ]
+        ])
+        const options = {
+            title: 'Reservas por Mês',
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+        }
+        const chart = new google.visualization.ColumnChart(container)
+        chart.draw(data, options)
+    }
+    function drawChart2() {
+        const container = document.querySelector('#chart2')
+        const data = new google.visualization.arrayToDataTable([
+            [ 'Nome do Quarto', 'Quantidade de Reservas' ],
+            [ 'QUARTO DE SOLTEIRO PADRÃO', 3 ],
+            [ 'QUARTO DE CASAL PADRÃO', 2 ],
+            [ 'QUARTO TRIPLO SUPERIOR', 1 ],
+            [ 'QUARTO MASTER DELUXE', 2 ]
+        ])
+        const options = {
+            title: 'Reservas do Dia por Quarto',
+            height: 400
+        }
+        const chart = new google.visualization.PieChart(container)
+        chart.draw(data, options)
+    }
+    function drawChart3() {
+        const container = document.querySelector('#chart3')
+        const data = new google.visualization.arrayToDataTable([
+          ['Quarto', 'QUARTO DE SOLTEIRO PADRÃO', 
+          'QUARTO DE CASAL PADRÃO', 'QUARTO TRIPLO SUPERIOR', 
+          'QUARTO MASTER DELUXE', { role: 'annotation' } ],
+          ['2022', 10250, 13250, 16250, 6250, ''],
+          ['2023', 10250, 13250, 16250, 6250, '']
+        ])
+        const options = {
+            title: 'Ganhos no Ano por Quarto',
+            height: 600
+        }
+        const chart = new google.visualization.BarChart(container)
+        chart.draw(data, options)
+    }
+    function drawChart4() {
+        const container = document.querySelector('#chart4')
+        const data = new google.visualization.arrayToDataTable([
+            [ 'Status', 'Quantidade de Reservas'],
+            [ 'Reserva aceita', 265 ],
+            [ 'Aguardando aprovação', 25 ],
+            [ 'Reserva Recusada', 30 ],
+        ])
+        const options = {
+            title: 'Situação de Reservas por Status',
+            pieHole: 0.4,
+            height: 600,
+            slices: {
+            0: { color: 'green' },
+            1: { color: 'gold' },
+            2: { color: 'red' }, 
+          }
+        }
+        const chart = new google.visualization.PieChart(container)
+        chart.draw(data, options)
+    }
+</script>

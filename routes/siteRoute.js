@@ -11,29 +11,9 @@ module.exports = (io) => {
   const ServicosController = require('../controllers/site.servicos.controller.js');
   const ContatosController = require('../controllers/site.contatos.controller.js');
   const ReservaController = require('../controllers/site.reservas.controller');
-  //  const LoginController = require('../controllers/site.login.controller');
-  //  
-  
-  let defaultsReservas = {
-    title: 'Reserva - Hotel Ventura',
-    header: {
-      background: 'images/img_bg_2.jpg',
-      title: 'Reserve um quarto!'
-    },
-    body: {}
-  };
-  
-  
-  let defaultLogin = {
-    title: 'Login - Hotel Ventura',
-    header: {
-      background: 'images/img_bg_4.jpg',
-      title: 'Faça seu Login!'
-    },
-    body: {}
-  };
+  const LoginController = require('../controllers/site.login.controller'); 
+  const UsuarioadminController = require('../controllers/site.usuarioadmin.controller'); 
 
-  
   router.get('/', SiteController.renderHome);
 
   router.get('/quartos', QuartosController.renderQuartos);
@@ -48,59 +28,11 @@ module.exports = (io) => {
 
   router.post('/reservas', ReservaController.criarReserva);
 
-  router.get('/login', (req, res, next) => {
-
-    res.render('site/login', Object.assign({}, defaults, defaultLogin));
-
-  });
+  router.get('/login', LoginController.renderLogin);
 
   router.post('/subscribe', SiteController.inscreverEmail);
 
-/*   router.post('/subscribe', (req, res, next) => {
-
-    let form = new formidable.IncomingForm();
-
-    form.parse(req, (err, fields, files) => {
-
-      if (!fields.email) {
-
-        res.status(400);
-        res.send({
-          error: 'Preencha o campo e-mail.'
-        });
-
-      } else {
-
-        conn.query(
-          "INSERT INTO tb_emails (email) VALUES(?)",
-          [
-            fields.email
-          ],
-          (err, results) => {
-
-            if (err) {
-
-              res.status(400);
-              res.send({
-                error: err
-              });
-
-            } else {
-
-              io.emit('reservations update', fields);
-
-              res.send(results);
-
-            }
-
-          }
-        );
-
-      }
-
-    });
-
-  }); */
+  router.get('/usuarioadmin', UsuarioadminController.renderUsuarioadmin);
 
   return router;
 

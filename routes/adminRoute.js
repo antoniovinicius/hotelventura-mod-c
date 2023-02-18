@@ -10,6 +10,8 @@ module.exports = (io) => {
     const ReservaController = require('../controllers/admin.reservas.controller');
     const UsuarioController = require('../controllers/admin.usuarios.controller');
     const EmailController = require('../controllers/admin.emails.controller');
+    const LogController = require('../controllers/admin.logs.controller');
+    const DashboardController = require('../controllers/admin.dashboard.controller');
 
     router.use((req, res, next) => {
 
@@ -62,6 +64,12 @@ module.exports = (io) => {
     router.get('/emails', EmailController.getEmails);
 
     router.delete('/emails/:id', EmailController.deleteEmails);
+
+    router.get('/logs', LogController.getLogs);
+
+    router.get('/dashboard', DashboardController.getDashboard);
+
+    router.delete('/logs/:id', LogController.deleteLogs);
 
     router.get('/logout', LoginController.logout);
 
