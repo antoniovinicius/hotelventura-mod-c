@@ -3,7 +3,7 @@ const moment = require('moment');
 moment.locale('pt-BR');
 async function getUsuario(req, res, next){
   admin.usuarios().then(data => {
-
+    console.log(req.session.user)
     res.render('admin/usuarios', {
         url: req.url,
         user: req.session.user,
@@ -21,7 +21,7 @@ async function criarUsuario(req, res, next) {
     res.send(data);
 
 }).catch(err => {
-
+    console.log(err);
     res.status(400);
     res.send({
         error: err

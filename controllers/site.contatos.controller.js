@@ -7,8 +7,10 @@ async function renderContatos(req, res, _next){
           background: 'images/img_bg_3.jpg',
           title: 'Diga um oi!'
         },
-        headerIndex: false,
-        body: {}
+      headerIndex: false,
+        isAuthenticated: req.isAuthenticated(),
+      body: {},
+        user:req.user
       }));
 }
 

@@ -8,7 +8,9 @@ async function renderPaginaLogin(req, res, next){
 
 }
 
-async function loginUsuario(req, res, next){
+async function loginUsuario(req, res, next) {
+  console.log(req.session.user)
+  
   let render = (error) => {
 
     res.render('admin/login', {

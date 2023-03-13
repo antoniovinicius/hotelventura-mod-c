@@ -11,7 +11,7 @@ function atualizaInfos() {
 }
 
 function editReserva() {
-  
+    console.log('editReserva')
     var data1 = new Date(document.getElementById('inputDataInicioCreateEdit').value);
     var data2 = new Date(document.getElementById('inputDataFimCreateEdit').value);
     var diffTime = Math.abs(data2 - data1);
@@ -22,12 +22,16 @@ function editReserva() {
 }
 
 function recuperaTarifaEdit() {
+    console.log('recuperaTarifaedit')
+    console.log(globalDias)
     var sel = document.getElementById('inputQuartoEdit');
     var text = sel.options[sel.selectedIndex].text;
     var tarifa = text.split("R$");
     globalValorTarifa = parseFloat(tarifa[1]);
+    console.log(globalValorTarifa);
     atualizaInfosEdit();
 }
+
 
 function atualizaInfosEdit() {
    

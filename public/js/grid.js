@@ -12,6 +12,10 @@ class Grid {
                 $(this.options.modalReserva).modal('show');
 
             },
+            afterFotosClick() {
+                $(this.options.modalFotos).modal('show');
+
+            },
             afterDeleteClick() {
 
                 window.location.reload();
@@ -37,6 +41,11 @@ class Grid {
                 window.location.reload();
 
             },
+            afterFormFotos() {
+
+                window.location.reload();
+
+            },
             afterFormReserva() {
 
                 window.location.reload();
@@ -55,13 +64,35 @@ class Grid {
         this.options = Object.assign({}, {
             modalCreate: '#modal-create',
             modalUpdate: '#modal-update',
+            modalFotos: '#modal-fotos',
             modalReserva: '#modal-reserva',
             btnReserva: '.btn-reserva',
+            btnFotos: '.btn-fotos',
             btnUpdate: '.btn-update',
             btnDelete: '.btn-delete',
             textDeleteConfirm: 'Deseja realmente excluir?',
             onUpdateLoad: (formUpdate, name, data) => {
                 let input = formUpdate.querySelector(`[name=${name}]`);
+                console.log(input);
+
+                if (input) {
+                    switch (input.type) {
+                        case 'date':
+                            input.value = moment(data[name]).format('YYYY-MM-DD');
+                            input.setAttribute('value', moment(data[name]).format('YYYY-MM-DD'));
+                            break;
+                        default:
+                            input.value = data[name];
+                            input.setAttribute('value', data[name]);
+                    }
+                }
+
+            },
+             onFotosLoad: (formFotos, name, data) => {
+                let input = formFotos.querySelector(`[name=${name}]`);
+                 console.log(input);
+                 console.log(name)
+                 console.log(data);
 
                 if (input) {
                     switch (input.type) {
@@ -100,7 +131,8 @@ class Grid {
         this.formCreate = document.querySelector(this.options.modalCreate + ' form');
         this.formUpdate = document.querySelector(this.options.modalUpdate + ' form');
         this.formReserva = document.querySelector(this.options.modalReserva + ' form');
-
+        this.formFotos = document.querySelector(this.options.modalFotos + ' form');
+        console.log(this.formFotos);
         this.initForms();
         this.initRowButtons();
 
@@ -115,7 +147,7 @@ class Grid {
     getTrData(e) {
  
         let path = e.path || (e.composedPath && event.composedPath()) || composedPath(e.target);
-        
+        console.log(path);
         if (path) {
        
           let tr = path.find(el => {
@@ -123,7 +155,10 @@ class Grid {
             return (el.tagName.toUpperCase() === 'TR');
        
           });
-       
+            console.log(tr);
+            console.log(tr.dataset);
+            console.log(tr.dataset.row);
+          
           return JSON.parse(tr.dataset.row);
         }
       }
@@ -134,13 +169,15 @@ class Grid {
                 success: response => {
                     this.fireEvent('afterFormCreate', [response]);
                 },
-                failure: () => {
+                failure: (erro) => {
+                    console.log(erro);
                     this.fireEvent('afterFormCreateError');
                 }
             });
         }
 
         if (this.formReserva) {
+            console.log(this.formReserva)
             this.formReserva.submitAjax({
                 success: response => {
                     this.fireEvent('afterFormReserva', [response]);
@@ -163,6 +200,20 @@ class Grid {
             });
         }
 
+        if (this.formFotos) {
+            console.log(this.formFotos)
+            this.formFotos.submitAjax({
+                
+                success: response => {
+                    console.log(response)
+                    this.fireEvent('afterFormFotos', [response]);
+                },
+                failure: () => {
+                    this.fireEvent('afterFormFotosError');
+                }
+            });
+        }
+
     }
 
     initRowButtons() {
@@ -177,11 +228,21 @@ class Grid {
 
                         this.actionBtnUpdate(e);
 
-                    } else if (btn.classList.contains('btn-delete')) {
+                    }else if(btn.classList.contains('btn-fotos')) {
+                        console.log('btn-fotos')
+                        this.actionBtnFotos(e);
+
+                    }
+                    else if (btn.classList.contains('btn-delete')) {
 
                         this.actionBtnDelete(e);
 
-                    } else if (btn.classList.contains('btn-reserva')) {
+                    }
+                    else if (btn.classList.contains('btn-delete-foto')) {
+
+                        this.actionBtnDeleteFoto(e);
+
+                    }else if (btn.classList.contains('btn-reserva')) {
 
                         this.actionBtnReserva(e);
 
@@ -215,6 +276,21 @@ class Grid {
 
     }
 
+    actionBtnFotos(e) {
+        this.fireEvent('beforeFotosClick');
+
+        let data = this.getTrData(e);
+
+        for (let name in data) {
+
+            this.options.onFotosLoad(this.formFotos, name, data);
+
+        }
+
+        this.fireEvent('afterFotosClick');
+
+    }
+
     actionBtnReserva(e) {
 
         this.fireEvent('beforeReservaClick');
@@ -242,6 +318,34 @@ class Grid {
             let xhr = new XMLHttpRequest();
 
             xhr.open('DELETE', eval("`" + this.options.urlDelete + "`"), true);
+
+            xhr.onreadystatechange = response => {
+
+                if (xhr.readyState === 4 && xhr.status === 200) {
+
+                    this.fireEvent('afterDeleteClick');
+
+                }
+
+            }
+
+            xhr.send();
+
+        }
+
+    }
+
+    actionBtnDeleteFoto(e) {
+
+        this.fireEvent('beforeDeleteClick');
+
+        let data = this.getTrData(e);
+
+        if (confirm(eval("`" + this.options.textDeleteConfirmFoto + "`"))) {
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('DELETE', eval("`" + this.options.urlDeleteFoto + "`"), true);
 
             xhr.onreadystatechange = response => {
 

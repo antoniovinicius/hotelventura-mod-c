@@ -171,7 +171,7 @@
                             <select id="inputQuarto" name="fk_id_quarto" class="form-control"
                                 onchange="recuperaTarifa(this)">
                                 <option value=""> -- selecione -- </option>
-                                <% pagination.quartos.forEach(function(row){ %>
+                                <% pagination.quartos.quartos.forEach(function(row){ %>
                                     <option value="<%= row.id_quarto %>">
                                         <%= row.nome_quarto %> | <%= Intl.NumberFormat('pt-br', {style: 'currency' ,
                                                 currency: 'BRL' }).format(row.tarifa) %>
@@ -248,7 +248,7 @@
                             <select id="inputQuartoEdit" name="fk_id_quarto" class="form-control"
                                 onchange="recuperaTarifa(this)">
                                 <option value=""> -- selecione -- </option>
-                                <% pagination.quartos.forEach(function(row){ %>
+                                <% pagination.quartos.quartos.forEach(function(row){ %>
                                     <option value="<%= row.id_quarto %>">
                                         <%= row.nome_quarto %> | <%= Intl.NumberFormat('pt-br', {style: 'currency' ,
                                                 currency: 'BRL' }).format(row.tarifa) %>
@@ -320,7 +320,7 @@
                             <label for="inputQuarto">Quarto</label>
                             <select id="inputQuarto" name="fk_id_quarto" class="form-control" disabled>
                                 <option value=""> -- selecione -- </option>
-                                <% pagination.quartos.forEach(function(row){ %>
+                                <% pagination.quartos.quartos.forEach(function(row){ %>
                                     <option value="<%= row.id_quarto %>">
                                         <%= row.nome_quarto %> | <%= Intl.NumberFormat('pt-br', {style: 'currency' ,
                                                 currency: 'BRL' }).format(row.tarifa) %>

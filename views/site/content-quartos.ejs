@@ -1,3 +1,7 @@
+<!-- Owl Carousel  -->
+<link rel="stylesheet" href="css/owl.carousel.min.css">
+<link rel="stylesheet" href="css/owl.theme.default.min.css">
+
 <div class="gtco-section">
     <div class="gtco-container">
         <div class="row">
@@ -9,27 +13,92 @@
         <div class="row">
 
             <% quartos.forEach(function(quarto){ %>
-            <div class="card card-price">
-                <div class="card-img">
-                    <img src="<%=quarto.foto%>" class="img-responsive">
-                    <div class="card-caption">
-                        <span class="h2"><%=quarto.nome_quarto%></span>
+
+                <div class="card card-price">
+                    <div class="owl-carousel">
+                        <div class="card-img">
+                            <img src="<%=quarto.foto%>" class="img-responsive">
+                            <div class="card-caption">
+                                <span class="h2">
+                                    <%=quarto.nome_quarto%>
+                                </span>
+                            </div>
+                        </div>
+
+                        <% fotos.forEach(function(foto){ %>
+                            <% if (foto.fk_id_quarto===quarto.id_quarto) {%>
+                                <div class="card-img">
+                                    <img src="<%=foto.foto%>" class="img-responsive">
+                                    <div class="card-caption">
+                                        <span class="h2">
+                                            <%=quarto.nome_quarto%>
+                                        </span>
+                                    </div>
+                                </div>
+                                <% } %>
+                        <% }); %>
+
+                    </div>
+
+                    <div class="card-body">
+                        <div class="price"><span class="price cursive-font">
+                                <%= Intl.NumberFormat('pt-br', {style: 'currency' , currency: 'BRL'
+                                    }).format(quarto.tarifa) %>
+                            </span></div>
+                        <ul class="details">
+                            <p>
+                                <%=quarto.descricao%>
+                            </p>
+                        </ul>
+                        <ul class="details">
+                            <p>
+                                <%=quarto.descricao%>
+                            </p>
+                        </ul>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th class="text-center"><span class="price cursive-font">Metragem</span>
+                                        <span class="glyphicon glyphicon-resize-full"></span>
+                                    </th>
+                                    <th class="text-center"><span class="price cursive-font">Máx. de
+                                            Hóspedes</span> <span class="glyphicon glyphicon-user"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">
+                                        <%=quarto.metragem%><span> m</span>
+                                    </th>
+                                    <th class="text-center">
+                                        <%=quarto.qt_hospedes_quarto%>
+                                    </th>
+                                </tr>
+                            </tbody>
+
+                        </table>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="price">R$ <span class="price cursive-font"><%= Intl.NumberFormat('pt-br', {style: 'currency' ,
-                        currency: 'BRL' }).format(quarto.tarifa) %></span></div>
-                    <ul class="details">
-                    <p>
-                        <%=quarto.descricao%>
-                    </p>
-                    </ul>
-                </div>
-            </div>
-            <% }); %>
+                <% }); %>
 
         </div>
 
 
     </div>
 </div>
+
+<script src="js/jquery.min.js"></script>
+<!-- Carousel -->
+<script src="js/owl.carousel.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".owl-carousel").owlCarousel({
+            autoplay: true,
+            autoplayTimeout: 6000,
+            autoplayHoverPause: true,
+            lazyLoad: true,
+            items: 1,
+            nav:true,
+            navText: ['<i><</i>','<i>></i>']
+        });
+    });
+</script>

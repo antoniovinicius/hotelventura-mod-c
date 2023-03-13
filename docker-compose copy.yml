@@ -1,0 +1,36 @@
+version: "3.0"
+
+services:
+  db:
+    build: ./mysql
+    container_name: ventura_db
+    ports:
+      - 3306:3306
+    networks:
+      - hotel
+  redis:
+    build: ./redis
+    container_name: ventura_redis
+    ports:
+      - 6379:6379
+    networks:
+      - hotel
+  app:
+    build: ./
+    container_name: hotel_ventura_app
+    ports:
+      - 3000:3000
+    restart: on-failure
+    depends_on:
+      - db
+      - redis
+
+    environment:
+      - DB_HOST=db
+      - CACHE_HOST=redis://redis:6379
+      - WAIT_HOSTS=db:3306, redis:6379
+      - WAIT_HOSTS_TIMEOUT=300
+    networks:
+      - hotel
+networks:
+  hotel:

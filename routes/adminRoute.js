@@ -41,6 +41,10 @@ module.exports = (io) => {
 
     router.post('/quartos', QuartoController.criarQuarto);
 
+    router.post('/quartos/fotos', QuartoController.adcionarFotos);
+
+    router.delete('/quartos/fotos/:id', QuartoController.removerFoto);
+
     router.delete('/quartos/:id', QuartoController.deleteQuarto);
 
     router.get('/reservas', ReservaController.getReserva);

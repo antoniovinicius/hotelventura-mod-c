@@ -36,7 +36,11 @@
         </div>
       </div>
     </section>
-
+    <div class="col-md-6 col-sm-6">
+      <span>Ano para consulta do gráfico 1: </span>
+      <input type="text" id="inputAno">
+      <button id="btnOK">OK</button>
+    </div>
   </div>
 
 
@@ -49,73 +53,131 @@
     google.charts.setOnLoadCallback(drawChart2)
     google.charts.setOnLoadCallback(drawChart3)
     google.charts.setOnLoadCallback(drawChart4)
+    
+    const btnOK = document.getElementById("btnOK");
+    btnOK.addEventListener("click", function() {
+      const ano = document.getElementById("inputAno").value;
+      google.charts.setOnLoadCallback(drawChart1(ano))
+    });
 
-    function drawChart1() {
+    function drawChart1(ano) {
         const container = document.querySelector('#chart1')
-        const data = new google.visualization.arrayToDataTable([
-            [ 'Mês', 'Quantidade' ],
-            [ 'Jan', 65 ],
-            [ 'Fev', 90 ],
-            [ 'Mar', 80 ],
-            [ 'Abr', 85 ],
-            [ 'Mai', 73 ],
-            [ 'Jun', 121 ],
-            [ 'Jul', 156 ],
-            [ 'Ago', 91 ],
-            [ 'Set', 87 ],
-            [ 'Out', 98 ],
-            [ 'Nov', 63 ],
-            [ 'Dez', 117 ]
-        ])
-        const options = {
-            title: 'Reservas por Mês',
-            height: 400,
-            bar: {groupWidth: "95%"},
-            legend: { position: "none" },
+
+        if (!ano) {
+          var urlano = "/admin/grafico12023"
+        } else {
+          var urlano = "/admin/grafico1" + ano
         }
-        const chart = new google.visualization.ColumnChart(container)
-        chart.draw(data, options)
+
+        var jsonData = $.ajax({
+          url: urlano,
+          dataType: "json",
+          async: false
+        }).responseJSON;
+
+        if (jsonData.length > 0) {
+          let condArray = [['Mês', 'Quantidade']]; 
+
+          for(i=0; i<jsonData.length; i++) {
+            condArray.push([jsonData[i].mes, jsonData[i].quantidade]);
+          }
+    
+          var data = google.visualization.arrayToDataTable(condArray)
+
+          const options = {
+              title: 'Reservas por Mês',
+              height: 400,
+              legend: { position: 'none', maxLines: 12 },
+              chartArea: { width: '80%', height: '70%' }
+          }
+          const chart = new google.visualization.ColumnChart(container)
+          chart.draw(data, options)
+        } else {
+          //Armazenando a referência da Div dentro de uma variável:
+          var div = document.getElementById("chart1"); 
+          //Inserindo o texto dentro da Div:
+          div.innerHTML = "Não existem dados a serem exibidos!"; 
+        }
     }
     function drawChart2() {
         const container = document.querySelector('#chart2')
-        const data = new google.visualization.arrayToDataTable([
-            [ 'Nome do Quarto', 'Quantidade de Reservas' ],
-            [ 'QUARTO DE SOLTEIRO PADRÃO', 3 ],
-            [ 'QUARTO DE CASAL PADRÃO', 2 ],
-            [ 'QUARTO TRIPLO SUPERIOR', 1 ],
-            [ 'QUARTO MASTER DELUXE', 2 ]
-        ])
+
+        var jsonData = $.ajax({
+          url: "/admin/grafico2",
+          dataType: "json",
+          async: false
+        }).responseJSON;
+
+        let condArray = [['Nome do Quarto', 'Quantidade']]; 
+
+        for(i=0; i<jsonData.length; i++) {
+          condArray.push([jsonData[i].nome_quarto, jsonData[i].quantidade_reservas]);
+        }
+
+        const data = new google.visualization.arrayToDataTable(condArray)
         const options = {
             title: 'Reservas do Dia por Quarto',
-            height: 400
+            height: 400,
+            chartArea: { width: '90%', height: '80%' }
         }
         const chart = new google.visualization.PieChart(container)
         chart.draw(data, options)
     }
     function drawChart3() {
         const container = document.querySelector('#chart3')
-        const data = new google.visualization.arrayToDataTable([
-          ['Quarto', 'QUARTO DE SOLTEIRO PADRÃO', 
-          'QUARTO DE CASAL PADRÃO', 'QUARTO TRIPLO SUPERIOR', 
-          'QUARTO MASTER DELUXE', { role: 'annotation' } ],
-          ['2022', 10250, 13250, 16250, 6250, ''],
-          ['2023', 10250, 13250, 16250, 6250, '']
-        ])
+
+        var jsonData = $.ajax({
+          url: "/admin/grafico3",
+          dataType: "json",
+          async: false
+        }).responseJSON;
+
+        const dados = jsonData.map(({ano, nome_quarto, soma_vlr_tot_reserva}) => [parseInt(ano), nome_quarto, parseFloat(soma_vlr_tot_reserva)]);
+
+        const anos = [...new Set(dados.map(item => item[0]))]
+        const quartos = [...new Set(dados.map(item => item[1]))]
+        const resultado = []
+
+        // Adiciona cabeçalho
+        resultado.push(['ano', ...quartos])
+
+        // Preenche valores
+        anos.forEach(ano => {
+          const valores = [ano]
+          quartos.forEach(quarto => {
+            const valor = dados.find(item => item[0] === ano && item[1] === quarto)
+            valores.push(valor ? valor[2] : '')
+          })
+          resultado.push(valores)
+        })
+
+        console.log(resultado)
+
+        const data = new google.visualization.arrayToDataTable(resultado)
         const options = {
             title: 'Ganhos no Ano por Quarto',
-            height: 600
+            height: 600,
+            vAxis: {format: '0'}
         }
         const chart = new google.visualization.BarChart(container)
         chart.draw(data, options)
     }
     function drawChart4() {
         const container = document.querySelector('#chart4')
-        const data = new google.visualization.arrayToDataTable([
-            [ 'Status', 'Quantidade de Reservas'],
-            [ 'Reserva aceita', 265 ],
-            [ 'Aguardando aprovação', 25 ],
-            [ 'Reserva Recusada', 30 ],
-        ])
+
+        var jsonData = $.ajax({
+          url: "/admin/grafico4",
+          dataType: "json",
+          async: false
+        }).responseJSON;
+
+        let condArray = [['Status', 'Quantidade de Reservas']]; 
+
+        for(i=0; i<jsonData.length; i++) {
+          condArray.push([jsonData[i].status_reserva, jsonData[i].quantidade_status]);
+        }
+
+        const data = new google.visualization.arrayToDataTable(condArray)
         const options = {
             title: 'Situação de Reservas por Status',
             pieHole: 0.4,

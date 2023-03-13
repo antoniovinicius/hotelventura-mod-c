@@ -4,18 +4,17 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                Quartos
-            </h1>
+            <h1>Quartos</h1>
             <ol class="breadcrumb">
-                <li><a href="/admin"><i class="fa fa-home"></i> Home</a></li>
+                <li>
+                    <a href="/admin"><i class="fa fa-home"></i> Home</a>
+                </li>
                 <li class="active">Quartos</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content container-fluid">
-
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Lista</h3>
@@ -32,37 +31,83 @@
                                 <th>Nome do Quarto</th>
                                 <th>Descrição</th>
                                 <th>Tarifa</th>
-                                <th style="min-width: 134px;">Ações</th>
+                                <th>Metragem</th>
+                                <th>Qtd máx de hóspedes</th>
+                                <th style="min-width: 134px">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% data.forEach(function(row){ %>
-                                <tr data-row="<%= JSON.stringify(row) %>">
-                                    <td>
-                                        <%= row.id_quarto %>
-                                    </td>
-                                    <td><img src="../<%= row.foto %>" alt="" style="height: 18px;"></td>
-                                    <td>
-                                        <%= row.nome_quarto %>
-                                    </td>
-                                    <td>
-                                        <%= row.descricao %>
-                                    </td>
-                                    <td>
-                                        <%= row.tarifa %>
-                                    </td>
-                                    <td><button type="button" class="btn btn-xs btn-info btn-update"><i
-                                                class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button"
-                                            class="btn btn-xs btn-danger btn-delete"><i class="fa fa-trash"></i>
-                                            Excluir</button></td>
-                                </tr>
+                                <div>
+                                    <tr data-row="<%= JSON.stringify(row) %>">
+                                        <td>
+                                            <%= row.id_quarto %>
+                                        </td>
+                                        <td>
+                                            <img src="../<%= row.foto %>" alt="" style="height: 18px" />
+                                        </td>
+                                        <td>
+                                            <%= row.nome_quarto %>
+                                        </td>
+                                        <td>
+                                            <%= row.descricao %>
+                                        </td>
+                                        <td>
+                                            <%= row.tarifa %>
+                                        </td>
+                                        <td>
+                                            <%= row.metragem %>
+                                        </td>
+                                        <td>
+                                            <%= row.qt_hospedes_quarto %>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-xs btn-info btn-update">
+                                                <i class="fa fa-pencil"></i> Editar
+                                            </button>
+
+                                            <button type="button" class="btn btn-xs btn-warning btn-fotos">
+                                                <i class="fa fa-camera"></i> Add fotos
+                                            </button>
+
+                                            &nbsp;<button type="button" class="btn btn-xs btn-danger btn-delete">
+                                                <i class="fa fa-trash"></i> Excluir
+                                            </button>
+
+                                        </td>
+                                    </tr>
+
+                                </div>
+                                <div>
+                                    <% if (row.fotos && row.fotos.length>0) {%>
+
+                                        <% row.fotos.forEach(function(foto){ %>
+                                            <tr data-row="<%= JSON.stringify(foto) %>">
+                                                <td>
+                                                    <%= foto.id_foto_quarto %>
+                                                </td>
+                                                <td><img src="../<%= foto.foto %>" alt="" style="height: 18px;">
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-xs btn-danger btn-delete-foto">
+                                                        <i class="fa fa-trash"></i> Excluir Imagem
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+
+                                    <% } %>
+                                </div>
+
+
+
+
                                 <% }); %>
                         </tbody>
                     </table>
                 </div>
                 <!-- /.box-body -->
             </div>
-
         </section>
         <!-- /.content -->
     </div>
@@ -70,7 +115,7 @@
 
     <div class="modal fade" id="modal-create">
         <div class="modal-dialog">
-            <div class="modal-content" style="border-top: 3px solid #00a65a;">
+            <div class="modal-content" style="border-top: 3px solid #00a65a">
                 <form enctype="multipart/form-data" method="post" action="/admin/quartos">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -81,7 +126,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="inputTitleCreate">Título</label>
-                            <input type="text" class="form-control" id="inputTitleCreate" name="nome_quarto">
+                            <input type="text" class="form-control" id="inputTitleCreate" name="nome_quarto" />
                         </div>
                         <div class="form-group">
                             <label for="inputDescriptionCreate">Descrição</label>
@@ -89,17 +134,36 @@
                         </div>
                         <div class="form-group">
                             <label for="inputPriceCreate">Preço</label>
-                            <input type="number" class="form-control" id="inputPriceCreate" name="tarifa">
+                            <input type="number" class="form-control" id="inputPriceCreate" name="tarifa" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputMetragemCreate">Metragem</label>
+                            <input ttype="number" step="0.01" class="form-control" id="inputMetragemCreate"
+                                name="metragem" />
                         </div>
                         <div class="form-group">
-                            <label for="inputPhotoCreate">Foto</label>
-                            <img style="max-width: 128px; max-height: 128px; display: block;"
-                                src="dist/img/boxed-bg.jpg" id="inputPhotoViewCreate">
-                            <input type="file" class="form-control" id="inputPhotoCreate" name="foto">
+                            <label for="inputQtHospedesCreate">Quantidade máxima de hóspedes</label>
+                            <input ttype="number" step="1" class="form-control" id="inputQtHospedesCreate"
+                                name="qt_hospedes_quarto" />
                         </div>
+                        <div id="divMultipleFotoCreate">
+                            <div class="form-group foto-quarto" id="divFotoCreate">
+                                <label for="inputPhotoCreate">Foto</label>
+                                <img style="max-width: 128px; max-height: 128px; display: block"
+                                    src="dist/img/boxed-bg.jpg" id="inputPhotoViewCreate" />
+                                <input type="file" class="form-control" id="inputPhotoCreate" name="foto" />
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-xs btn-info btn-update" onclick="adicionarImagemForm()">
+                            <i class="fa fa-pencil"></i> Adicionar imagem
+                        </button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+                            Cancelar
+                        </button>
                         <button type="submit" class="btn btn-success">Salvar</button>
                     </div>
                 </form>
@@ -111,9 +175,9 @@
 
     <div class="modal fade" id="modal-update">
         <div class="modal-dialog">
-            <div class="modal-content" style="border-top: 3px solid #00c0ef;">
+            <div class="modal-content" style="border-top: 3px solid #00c0ef">
                 <form enctype="multipart/form-data" method="post" action="/admin/quartos">
-                    <input type="hidden" name="id_quarto">
+                    <input type="hidden" name="id_quarto" id="id_quarto_editado" />
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -123,7 +187,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="inputTitleUpdate">Título</label>
-                            <input type="text" class="form-control" id="inputTitleUpdate" name="nome_quarto">
+                            <input type="text" class="form-control" id="inputTitleUpdate" name="nome_quarto" />
                         </div>
                         <div class="form-group">
                             <label for="inputDescriptionUpdate">Descrição</label>
@@ -131,17 +195,67 @@
                         </div>
                         <div class="form-group">
                             <label for="inputPriceUpdate">Preço</label>
-                            <input type="text" class="form-control" id="inputPriceUpdate" name="tarifa">
+                            <input type="text" class="form-control" id="inputPriceUpdate" name="tarifa" />
                         </div>
                         <div class="form-group">
-                            <label for="inputPhotoUpdate">Foto</label>
-                            <img style="max-width: 128px; max-height: 128px; display: block;"
-                                src="dist/img/boxed-bg.jpg" id="inputPhotoViewUpdate">
-                            <input type="file" class="form-control" id="inputPhotoUpdate" name="foto">
+                            <label for="inputMetragemUpdate">Metragem</label>
+                            <input ttype="number" step="0.01" class="form-control" id="inputMetragemUpdate"
+                                name="metragem" />
                         </div>
+                        <div class="form-group">
+                            <label for="inputQtHospedesUpdate">Quantidade máxima de hóspedes</label>
+                            <input ttype="number" step="1" class="form-control" id="inputQtHospedesUpdate"
+                                name="qt_hospedes_quarto" />
+                        </div>
+                        <div id="divMultipleFotoEdit">
+                            <div class="form-group foto-quarto">
+                                <label for="inputPhotoUpdate">Foto</label>
+                                <img style="max-width: 128px; max-height: 128px; display: block"
+                                    src="dist/img/boxed-bg.jpg" id="inputPhotoViewUpdate" />
+                                <input type="file" class="form-control" id="inputPhotoUpdate" name="foto" />
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-xs btn-info btn-update"
+                            onclick="adicionarImagemFormEdit()">
+                            <i class="fa fa-pencil"></i> Adicionar imagem
+                        </button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-info">Salvar</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="modal-fotos">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-top: 3px solid #00c0ef">
+                <form enctype="multipart/form-data" method="post" action="/admin/quartos/fotos">
+                    <input type="hidden" name="id_quarto" id="id_quarto_editado" />
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Adicionar Fotos</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divMultipleFotoAdd"></div>
+
+                        <button type="button" class="btn btn-xs btn-info btn-update" onclick="adicionarImagemFormAdd()">
+                            <i class="fa fa-pencil"></i> Adicionar imagem
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+                            Cancelar
+                        </button>
                         <button type="submit" class="btn btn-info">Salvar</button>
                     </div>
                 </form>
@@ -157,25 +271,162 @@
         <script src="/js/formsave.js"></script>
         <script src="/js/grid.js"></script>
         <script>
+            function mountedEdit() {
+                const idQuarto = document.getElementById("id_quarto_editado");
+
+                const fotos = "<% fotos %>";
+                console.log(fotos);
+            }
 
             new Grid({
-                id: 'grid',
-                urlDelete: '/admin/quartos/${data.id_quarto}',
-                textDeleteConfirm: 'Deseja realmente excluir ${data.nome_quarto} de quartos?',
+                id: "grid",
+                urlDelete: "/admin/quartos/${data.id_quarto}",
+                urlDeleteFoto: "/admin/quartos/fotos/${data.id_foto_quarto}",
+                textDeleteConfirm:
+                    "Deseja realmente excluir ${data.nome_quarto} de quartos?",
+                textDeleteConfirmFoto:
+                    "Deseja realmente excluir a foto do quarto ?",
                 onUpdateLoad: (formUpdate, name, data) => {
                     switch (name) {
-                        case 'foto':
-                            formUpdate.querySelector(`img`).src = '../' + data[name];
+                        case "foto":
+                            formUpdate.querySelector(`img`).src = "../" + data[name];
                             break;
                         default:
                             let input = formUpdate.querySelector(`[name=${name}]`);
                             if (input) input.value = data[name];
-
                     }
-
-                }
+                },
             });
 
-            new FileReader(document.querySelector('#inputPhotoCreate'), document.querySelector('#inputPhotoViewCreate'));
-            new FileReader(document.querySelector('#inputPhotoUpdate'), document.querySelector('#inputPhotoViewUpdate'));
+            function adicionarImagemForm() {
+                console.log("adicionarImagemForm");
+                let frag = document.createDocumentFragment();
+                const divMultipla = document.getElementById("divMultipleFotoCreate");
+                const total = divMultipla.childElementCount;
+
+                const buttonCancelar = document.createElement("BUTTON");
+                buttonCancelar.setAttribute("class", "btn btn-xs btn-danger btn-delete");
+
+                buttonCancelar.onclick = function (event) {
+                    removerImagemForm(event);
+                };
+                buttonCancelar.setAttribute("type", "button");
+
+                const icon = document.createElement("I");
+                icon.setAttribute("class", "fa fa-trash");
+                buttonCancelar.appendChild(icon);
+
+                const label = document.createElement("LABEL");
+                label.innerText = "Foto";
+                label.htmlFor = "inputPhotoCreateMore" + total;
+
+                const input = document.createElement("INPUT");
+                input.setAttribute("class", "form-control");
+                input.setAttribute("id", "inputPhotoCreateMore" + total);
+                input.setAttribute("type", "file");
+                input.setAttribute("name", "foto" + total);
+
+                const div = document.createElement("DIV");
+                div.setAttribute("class", "form-group indice-create" + total);
+
+                div.appendChild(label);
+                div.appendChild(input);
+                div.appendChild(buttonCancelar);
+                frag.appendChild(div);
+                divMultipla.appendChild(frag);
+            }
+
+            function adicionarImagemFormAdd() {
+                console.log("adicionarImagemForm");
+                let frag = document.createDocumentFragment();
+                const divMultipla = document.getElementById("divMultipleFotoAdd");
+                const total = divMultipla.childElementCount
+                    ? divMultipla.childElementCount
+                    : 0;
+
+                const buttonCancelar = document.createElement("BUTTON");
+                buttonCancelar.setAttribute("class", "btn btn-xs btn-danger btn-delete");
+
+                buttonCancelar.onclick = function (event) {
+                    removerImagemForm(event);
+                };
+                buttonCancelar.setAttribute("type", "button");
+
+                const icon = document.createElement("I");
+                icon.setAttribute("class", "fa fa-trash");
+                buttonCancelar.appendChild(icon);
+
+                const label = document.createElement("LABEL");
+                label.innerText = "Foto";
+                label.htmlFor = "inputPhotoAddMore" + total;
+
+                const input = document.createElement("INPUT");
+                input.setAttribute("class", "form-control");
+                input.setAttribute("id", "inputPhotoAddMore" + total);
+                input.setAttribute("name", "addMore" + total);
+                input.setAttribute("type", "file");
+
+                const div = document.createElement("DIV");
+                div.setAttribute("class", "form-group indice-add" + total);
+
+                div.appendChild(label);
+                div.appendChild(input);
+                div.appendChild(buttonCancelar);
+                frag.appendChild(div);
+                divMultipla.appendChild(frag);
+            }
+
+            function adicionarImagemFormEdit() {
+                mountedEdit();
+                console.log("adicionarImagemForm");
+                let frag = document.createDocumentFragment();
+                const divMultipla = document.getElementById("divMultipleFotoEdit");
+                const total = divMultipla.childElementCount;
+
+                const buttonCancelar = document.createElement("BUTTON");
+                buttonCancelar.setAttribute("class", "btn btn-xs btn-danger btn-delete");
+
+                buttonCancelar.onclick = function (event) {
+                    removerImagemForm(event);
+                };
+                buttonCancelar.setAttribute("type", "button");
+
+                const icon = document.createElement("I");
+                icon.setAttribute("class", "fa fa-trash");
+                buttonCancelar.appendChild(icon);
+
+                const label = document.createElement("LABEL");
+                label.innerText = "Foto";
+                label.htmlFor = "inputPhotoEditMore" + total;
+
+                const input = document.createElement("INPUT");
+                input.setAttribute("class", "form-control");
+                input.setAttribute("id", "inputPhotoEditMore" + total);
+
+                input.setAttribute("type", "file");
+
+                const div = document.createElement("DIV");
+                div.setAttribute("class", "form-group indice-edit" + total);
+
+                div.appendChild(label);
+                div.appendChild(input);
+                div.appendChild(buttonCancelar);
+                frag.appendChild(div);
+                divMultipla.appendChild(frag);
+            }
+
+            function removerImagemForm(event) {
+                const elementRemove = event.srcElement.parentNode;
+
+                elementRemove.remove();
+            }
+
+            new FileReader(
+                document.querySelector("#inputPhotoCreate"),
+                document.querySelector("#inputPhotoViewCreate")
+            );
+            new FileReader(
+                document.querySelector("#inputPhotoUpdate"),
+                document.querySelector("#inputPhotoViewUpdate")
+            );
         </script>

@@ -7,8 +7,10 @@ async function renderServicos(req, res, _next){
           background: 'images/img_bg_1.jpg',
           title: 'É um prazer poder servir!'
         },
-        headerIndex: false,
-        body: {}
+      headerIndex: false,
+        isAuthenticated: req.isAuthenticated(),
+      body: {},
+        user:req.user
       }));
 }
   

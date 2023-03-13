@@ -2,8 +2,7 @@ const site = require('../inc/site')(io);
 const moment = require('moment');
 
 async function renderReservas(req, res, _next){
-    site.quartos().then(results => {
-  
+    site.quartos().then(results => {   
     res.render('site/reservas', Object.assign({}, {
         title: 'Reserva - Hotel Ventura',
         header: {
@@ -12,9 +11,11 @@ async function renderReservas(req, res, _next){
         },
         quartos: results,
         headerIndex: false,
+        isAuthenticated: req.isAuthenticated(),
         moment,
-        body: {}
-      }))
+        body: {},
+        user:req.user
+      })) 
   });
 }
 
@@ -31,5 +32,19 @@ async function criarReserva(req, res, next) {
   
   });
 }
+
+async function editReserva(req, res, next) {
+    site.reservasSaveEdit(req, res).then(data => {
+      res.send(data);
+
+  }).catch(err => {
   
-module.exports = {renderReservas, criarReserva}
+      res.status(400);
+      res.send({
+          error: err
+      });
+  
+  });
+}
+  
+module.exports = {renderReservas, criarReserva, editReserva}

@@ -3,9 +3,9 @@ const moment = require('moment');
 moment.locale('pt-BR');
 
 async function getReserva(req, res, next){
-  req.query.start = (req.query.start) ? moment(req.query.start).format('YYYY-MM-DD') : moment().subtract(1, 'year').format('YYYY-MM-DD');
-        req.query.end = (req.query.end) ? moment(req.query.end).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-    
+        req.query.start = (req.query.start) ? moment(req.query.start).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+        req.query.end = (req.query.end) ? moment(req.query.end).format('YYYY-MM-DD') : moment().add(60, 'days').format('YYYY-MM-DD');
+
         admin.reservas(req.query).then(pagination => {
             res.render('admin/reservas', {
                 url: req.url,
@@ -22,14 +22,14 @@ async function getReserva(req, res, next){
 }
 
 async function getReservaGrafico(req, res, next){
-  req.query.start = (req.query.start) ? moment(req.query.start).format('YYYY-MM-DD') : moment().subtract(1, 'year').format('YYYY-MM-DD');
-  req.query.end = (req.query.end) ? moment(req.query.end).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+    req.query.start = (req.query.start) ? moment(req.query.start).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+    req.query.end = (req.query.end) ? moment(req.query.end).format('YYYY-MM-DD') : moment().add(60, 'days').format('YYYY-MM-DD');
 
-  admin.reservasChart(req.query).then(chartData => {
+    admin.reservasChart(req.query).then(chartData => {
 
-      res.send(chartData);
+        res.send(chartData);
 
-  });
+    });
 
 }
 
@@ -39,7 +39,7 @@ async function criarReserva(req, res, next) {
     res.send(data);
 
 }).catch(err => {
-
+    console.log(err);
     res.status(400);
     res.send({
         error: err
